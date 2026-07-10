@@ -8,7 +8,7 @@ public class Company : BaseEntity
     public string Cnpj { get; private set; } = string.Empty;
 
     private readonly List<User> _users = [];
-    public IReadOnlyCollection<User> users => _users.AsReadOnly();
+    public IReadOnlyCollection<User> Users => _users.AsReadOnly();
 
     private readonly List<Client> _clients = [];
     public IReadOnlyCollection<Client> Clients => _clients.AsReadOnly();

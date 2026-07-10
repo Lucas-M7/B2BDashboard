@@ -1,0 +1,8 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/B2BDashboard.Api/B2BDashboard.Api.csproj" />
+    <Project Path="src/B2BDashboard.Application/B2BDashboard.Application.csproj" />
+    <Project Path="src/B2BDashboard.Domain/B2BDashboard.Domain.csproj" />
+    <Project Path="src/B2BDashboard.Infrastructure/B2BDashboard.Infrastructure.csproj" />
+  </Folder>
+</Solution>

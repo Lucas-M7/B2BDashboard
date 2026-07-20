@@ -6,6 +6,7 @@ public class Company : BaseEntity
 {
     public string Name { get; private set; } = string.Empty;
     public string Cnpj { get; private set; } = string.Empty;
+    public bool IsActive { get; private set; } = true;
 
     private readonly List<User> _users = [];
     public IReadOnlyCollection<User> Users => _users.AsReadOnly();
@@ -32,6 +33,15 @@ public class Company : BaseEntity
             throw new ArgumentException("Nome não pode ser vazio.", nameof(newName));
 
         Name = newName;
+        MarkAsUpdated();
+    }
+
+    public void Deactivate()
+    {
+        if (!IsActive)
+            throw new InvalidOperationException("A empresa já está inativa.");
+
+        IsActive = false;
         MarkAsUpdated();
     }
 }

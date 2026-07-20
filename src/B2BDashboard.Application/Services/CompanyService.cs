@@ -20,4 +20,24 @@ public class CompanyService(ICompanyRepository companyRepository, IUnitOfWork un
 
         return new CompanyResponse(company.Id, company.Name, company.Cnpj, company.CreatedAt);
     }
+
+    public async Task DeactivateAsync(Guid id, CancellationToken ct = default)
+    {
+        var company = await companyRepository.GetByIdAsync(id, ct)
+            ?? throw new NotFoundException("Empresa não encontrada.");
+
+        company.Deactivate();
+        await unitOfWork.SaveChangesAsync(ct);
+    }
+
+    public async Task<CompanyResponse> UpdateAsync(Guid id, UpdateCompanyRequest request, CancellationToken ct = default)
+    {
+        var company = await companyRepository.GetByIdAsync(id, ct)
+            ?? throw new NotFoundException("Empresa não encontrada.");
+
+        company.Rename(request.Name);
+        await unitOfWork.SaveChangesAsync(ct);
+
+        return new CompanyResponse(company.Id, company.Name, company.Cnpj, company.CreatedAt);
+    }
 }

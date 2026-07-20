@@ -22,4 +22,16 @@ public class SaleService(IClientRepository clientRepository, ISaleRepository sal
 
         return new SaleResponse(sale.Id, sale.Amount, sale.Description, sale.SaleDate, sale.ClientId);
     }
+
+    // Em produção, o ideal seria o "soft cancel"
+    // (um campo Status) em vez de um delete físico
+    public async Task DeleteAsync(Guid id, Guid companyId, CancellationToken ct = default)
+    {
+        var sale = await saleRepository.GetByIdAsync(id, ct);
+        if (sale is null || sale.CompanyId != companyId)
+            throw new NotFoundException("Venda não encontrada.") ;
+
+        saleRepository.Remove(sale);
+        await unitOfWork.SaveChangesAsync(ct);
+    }
 }

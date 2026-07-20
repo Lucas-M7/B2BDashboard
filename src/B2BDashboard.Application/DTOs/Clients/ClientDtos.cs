@@ -6,4 +6,8 @@ public record CreateClientRequest(
     [Required] string Name, 
     string Document, 
     [EmailAddress] string Email);
+public record UpdateClientRequest(
+    [Required, MaxLength(200)] string Name,
+    [MaxLength(20)] string Document,
+    [EmailAddress] string Email);
 public record ClientResponse(Guid Id, string Name, string Document, string Email);

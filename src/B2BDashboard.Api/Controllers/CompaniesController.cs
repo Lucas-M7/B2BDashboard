@@ -16,4 +16,19 @@ public class CompaniesController(ICompanyService companyService) : ControllerBas
         var result = await companyService.CreateAsync(request, ct);
         return Created($"api/companies/{result.Id}", result);
     }
+
+    [HttpPut("{id:guid}")]
+    public async Task<ActionResult<CompanyResponse>> Update(
+        Guid id, [FromBody] UpdateCompanyRequest request, CancellationToken ct)
+    {
+        var result = await companyService.UpdateAsync(id, request, ct);
+        return Ok(result);
+    }
+
+    [HttpDelete("{id:guid}")]
+    public async Task<ActionResult> Deactivate(Guid id, CancellationToken ct)
+    {
+        await companyService.DeactivateAsync(id, ct);
+        return NoContent();
+    }
 }

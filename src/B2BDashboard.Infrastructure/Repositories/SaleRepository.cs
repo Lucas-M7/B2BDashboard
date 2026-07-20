@@ -12,4 +12,6 @@ public class SaleRepository(AppDbcontext context) : ISaleRepository
 
     public async Task<Sale?> GetByIdAsync(Guid id, CancellationToken ct = default) =>
         await context.Sales.FirstOrDefaultAsync(c => c.Id == id, ct);
+
+    public void Remove(Sale sale) => context.Sales.Remove(sale);
 }

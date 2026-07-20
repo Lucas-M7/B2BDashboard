@@ -15,4 +15,6 @@ public class ClientRepository(AppDbcontext context) : IClientRepository
 
     public async Task<Client?> GetByIdAsync(Guid id, CancellationToken ct = default) =>
         await context.Clients.FirstOrDefaultAsync(c => c.Id == id, ct);
+
+    public void Remove(Client client) => context.Clients.Remove(client);
 }

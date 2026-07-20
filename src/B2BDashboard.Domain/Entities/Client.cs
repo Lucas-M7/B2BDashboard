@@ -29,4 +29,15 @@ public class Client : BaseEntity
             CompanyId = companyId
         };
     }
+
+    public void Update(string name, string document, string email)
+    {
+        if (string.IsNullOrWhiteSpace(name))
+            throw new ArgumentException("Nome é obrigatório.", nameof(name));
+
+        Name = name;
+        Document = document;
+        Email = email;
+        MarkAsUpdated();
+    }
 }

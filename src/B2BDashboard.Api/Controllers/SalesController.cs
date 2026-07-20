@@ -17,4 +17,11 @@ public class SalesController(ISaleService saleService) : ControllerBase
         var result = await saleService.CreateAsync(request, companyId, ct);
         return Created($"api/companies/{companyId}/sales/{result.Id}", request);
     }
+
+    [HttpDelete("{id:guid}")]
+    public async Task<IActionResult> Delete(Guid companyId, Guid id, CancellationToken ct)
+    {
+        await saleService.DeleteAsync(id, companyId, ct);
+        return NoContent();
+    }
 }

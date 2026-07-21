@@ -5,4 +5,5 @@
     <Project Path="src/B2BDashboard.Domain/B2BDashboard.Domain.csproj" />
     <Project Path="src/B2BDashboard.Infrastructure/B2BDashboard.Infrastructure.csproj" />
   </Folder>
+  <Folder Name="/tests/" />
 </Solution>

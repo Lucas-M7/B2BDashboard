@@ -11,6 +11,7 @@ public class AppDbcontext : DbContext
     public DbSet<User> Users => Set<User>();
     public DbSet<Client> Clients => Set<Client>();
     public DbSet<Sale> Sales => Set<Sale>();
+    public DbSet<RefreshToken> RefreshTokens => Set<RefreshToken>();
 
     protected void OModelCreating(ModelBuilder modelBuilder)
     {

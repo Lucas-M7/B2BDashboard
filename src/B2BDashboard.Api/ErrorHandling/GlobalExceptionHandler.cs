@@ -16,6 +16,7 @@ public class GlobalExceptionHandler(ILogger<GlobalExceptionHandler> logger) : IE
             NotFoundException => (StatusCodes.Status404NotFound, "Recurso não encontrado"),
             ConflictException => (StatusCodes.Status409Conflict, "Conflito de dados"),
             ArgumentException => (StatusCodes.Status400BadRequest, "Requisição inválida"),
+            UnauthorizedException => (StatusCodes.Status401Unauthorized, "Não autorizado"),
             _ => (StatusCodes.Status500InternalServerError, "Erro interno do servidor")
         };
 

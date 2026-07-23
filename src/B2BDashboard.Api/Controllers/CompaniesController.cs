@@ -1,34 +1,28 @@
+using B2BDashboard.Api.Extensions;
 using B2BDashboard.Application.DTOs.Companies;
 using B2BDashboard.Application.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace B2BDashboard.Api.Controllers;
 
 [ApiController]
+[Authorize(Roles = "Admin")]
 [Route("api/companies")]
 public class CompaniesController(ICompanyService companyService) : ControllerBase
 {
-    [HttpPost]
-    public async Task<ActionResult<CompanyResponse>> Create(
-        [FromBody] CreateCompanyRequest request,
-        CancellationToken ct)
+    [HttpPut("me")]
+    public async Task<ActionResult<CompanyResponse>> UpdateOwnCompany(
+        [FromBody] UpdateCompanyRequest request, CancellationToken ct)
     {
-        var result = await companyService.CreateAsync(request, ct);
-        return Created($"api/companies/{result.Id}", result);
-    }
-
-    [HttpPut("{id:guid}")]
-    public async Task<ActionResult<CompanyResponse>> Update(
-        Guid id, [FromBody] UpdateCompanyRequest request, CancellationToken ct)
-    {
-        var result = await companyService.UpdateAsync(id, request, ct);
+        var result = await companyService.UpdateAsync(User.GetCompanyId(), request, ct);
         return Ok(result);
     }
 
-    [HttpDelete("{id:guid}")]
-    public async Task<ActionResult> Deactivate(Guid id, CancellationToken ct)
+    [HttpDelete("me")]
+    public async Task<IActionResult> DeactivateOwnCompany(CancellationToken ct)
     {
-        await companyService.DeactivateAsync(id, ct);
+        await companyService.DeactivateAsync(User.GetCompanyId(), ct);
         return NoContent();
     }
 }

@@ -1,37 +1,36 @@
+using B2BDashboard.Api.Extensions;
 using B2BDashboard.Application.DTOs.Clients;
 using B2BDashboard.Application.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace B2BDashboard.Api.Controllers;
 
 [ApiController]
-[Route("api/companies/{companyId:guid}/clients")]
+[Authorize]
+[Route("api/clients")]
 public class ClientsController(IClientService clientService) : ControllerBase
 {
     [HttpPost]
     public async Task<ActionResult<ClientResponse>> Create(
-        Guid companyId,
-        [FromBody] CreateClientRequest request,
-        CancellationToken ct)
+        [FromBody] CreateClientRequest request, CancellationToken ct)
     {
-        var result = await clientService.CreateAsync(request, companyId, ct);
-        return Created($"api/companies/{companyId}/clients/{result.Id}", result);
+        var result = await clientService.CreateAsync(request, User.GetCompanyId(), ct);
+        return Created($"api/clients/{result.Id}", result);
     }
 
     [HttpPut("{id:guid}")]
     public async Task<ActionResult<ClientResponse>> Update(
-        Guid companyId, Guid id, 
-        [FromBody] UpdateClientRequest request, 
-        CancellationToken ct)
+        Guid id, [FromBody] UpdateClientRequest request, CancellationToken ct)
     {
-        var result = await clientService.UpdateAsync(id, companyId, request, ct);
+        var result = await clientService.UpdateAsync(id, User.GetCompanyId(), request, ct);
         return Ok(result);
     }
 
     [HttpDelete("{id:guid}")]
-    public async Task<IActionResult> Delete(Guid companyId, Guid id, CancellationToken ct)
+    public async Task<IActionResult> Delete(Guid id, CancellationToken ct)
     {
-        await clientService.DeleteAsync(id, companyId, ct);
+        await clientService.DeleteAsync(id, User.GetCompanyId(), ct);
         return NoContent();
     }
 }

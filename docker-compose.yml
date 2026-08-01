@@ -1,0 +1,37 @@
+services:
+  db:
+    image: postgres:16
+    container_name: b2b-postgres
+    environment:
+      POSTGRES_DB: b2bdashboard
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: b2b-api
+    ports:
+      - "5000:8080"
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      ConnectionStrings__DefaultConnections: "Host=db;Port=5432;Database=b2bdashboard;Username=postgres;Password=postgres"
+      Jwt__Key: "26ad6e21475ab5cf3205265177afb92f8c67611330d6783c6e4777b01bd8c974"
+      Jwt__Issuer: "B2BDashboard.Api"
+      Jwt__Audience: "B2BDashboard.Client"
+    depends_on:
+      db:
+        condition: service_healthy
+
+volumes:
+  postgres-data:

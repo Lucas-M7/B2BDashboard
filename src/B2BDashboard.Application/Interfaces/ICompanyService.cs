@@ -7,4 +7,5 @@ public interface ICompanyService
     Task<CompanyResponse> CreateAsync(CreateCompanyRequest request, CancellationToken ct = default);
     Task<CompanyResponse> UpdateAsync(Guid id, UpdateCompanyRequest request, CancellationToken ct = default);
     Task DeactivateAsync(Guid id, CancellationToken ct = default);
+    Task<CompanyResponse> GetAsync(Guid id, CancellationToken ct = default);
 }

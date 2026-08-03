@@ -30,6 +30,14 @@ public class CompanyService(ICompanyRepository companyRepository, IUnitOfWork un
         await unitOfWork.SaveChangesAsync(ct);
     }
 
+    public async Task<CompanyResponse> GetAsync(Guid id, CancellationToken ct = default)
+    {
+        var company = await companyRepository.GetByIdAsync(id, ct)
+            ?? throw new NotFoundException("Empresa não encontrada.");
+
+        return new CompanyResponse(company.Id, company.Name, company.Cnpj, company.CreatedAt);
+    }
+
     public async Task<CompanyResponse> UpdateAsync(Guid id, UpdateCompanyRequest request, CancellationToken ct = default)
     {
         var company = await companyRepository.GetByIdAsync(id, ct)

@@ -16,5 +16,22 @@ public class ClientRepository(AppDbcontext context) : IClientRepository
     public async Task<Client?> GetByIdAsync(Guid id, CancellationToken ct = default) =>
         await context.Clients.FirstOrDefaultAsync(c => c.Id == id, ct);
 
+    public async Task<(IReadOnlyList<Client> Items, int TotalCount)> GetPagedByCompanyIdAsync(Guid companyId, int page, 
+        int pageSize, CancellationToken ct = default)
+    {
+        var query = context.Clients
+            .Where(c => c.CompanyId == companyId)
+            .OrderByDescending(c => c.CreatedAt);
+
+        var totalCount = await query.CountAsync(ct);
+
+        var items = await query
+            .Skip((page - 1) * pageSize)
+            .Take(pageSize)
+            .ToListAsync(ct);
+
+        return (items, totalCount);
+    }
+
     public void Remove(Client client) => context.Clients.Remove(client);
 }

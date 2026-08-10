@@ -6,6 +6,8 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <UserSecretsId>f7be80cc-66f2-4d56-96f9-ccff61810824</UserSecretsId>
     <!-- <DisableIdentityModelVersionMismatchCheck>true</DisableIdentityModelVersionMismatchCheck> -->
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <NoWarn>$(NoWarn);CS1591</NoWarn>
   </PropertyGroup>
 
   <ItemGroup>

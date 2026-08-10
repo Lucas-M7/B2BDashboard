@@ -85,6 +85,17 @@ builder.Services.AddSwaggerGen(options =>
     });
 });
 
+builder.Services.AddOpenApi(options =>
+{
+    options.AddDocumentTransformer((document, context, ct) =>
+    {
+        document.Info.Title = "B2B API";
+        document.Info.Version = "v1";
+        document.Info.Description = "API multi-tenant para gestão de clientes e vendas B2B.";
+        return Task.CompletedTask;
+    });
+});
+
 var app = builder.Build();
 
 app.UseExceptionHandler();

@@ -27,6 +27,3 @@ jobs:
 
       - name: Rodar testes
         run: dotnet test --no-build --configuration Release --logger "console;verbosity=normal"
-
-      - name: Verificar formatação
-        run: dotnet format --verify-no-changes

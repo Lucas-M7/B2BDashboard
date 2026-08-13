@@ -16,10 +16,10 @@ public class User : BaseEntity
     protected User() { }
 
     public static User Create(
-        string name, 
-        string email, 
-        string PasswordHash, 
-        UserRole role, 
+        string name,
+        string email,
+        string PasswordHash,
+        UserRole role,
         Guid companyId)
     {
         if (string.IsNullOrWhiteSpace(email) || !email.Contains('@'))

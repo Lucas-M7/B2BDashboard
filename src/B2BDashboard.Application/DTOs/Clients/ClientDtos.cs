@@ -3,8 +3,8 @@ using System.ComponentModel.DataAnnotations;
 namespace B2BDashboard.Application.DTOs.Clients;
 
 public record CreateClientRequest(
-    [Required] string Name, 
-    string Document, 
+    [Required] string Name,
+    string Document,
     [EmailAddress] string Email);
 public record UpdateClientRequest(
     [Required, MaxLength(200)] string Name,

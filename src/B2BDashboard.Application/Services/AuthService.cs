@@ -70,7 +70,7 @@ public class AuthService(
 
         var refreshToken = RefreshToken.Create(
             refreshTokenValue,
-            DateTime.UtcNow.AddDays(_jwtSettings.RefreshTokenExpirationDays), 
+            DateTime.UtcNow.AddDays(_jwtSettings.RefreshTokenExpirationDays),
             user.Id
         );
 

@@ -13,7 +13,7 @@ public class UnitOfWork(AppDbcontext context) : IUnitOfWork
         {
             return await context.SaveChangesAsync(cancellationToken);
         }
-        catch(DbUpdateException ex) when (ex.InnerException is PostgresException
+        catch (DbUpdateException ex) when (ex.InnerException is PostgresException
         {
             SqlState: PostgresErrorCodes.ForeignKeyViolation
         })

@@ -16,7 +16,7 @@ public class ClientRepository(AppDbcontext context) : IClientRepository
     public async Task<Client?> GetByIdAsync(Guid id, CancellationToken ct = default) =>
         await context.Clients.FirstOrDefaultAsync(c => c.Id == id, ct);
 
-    public async Task<(IReadOnlyList<Client> Items, int TotalCount)> GetPagedByCompanyIdAsync(Guid companyId, int page, 
+    public async Task<(IReadOnlyList<Client> Items, int TotalCount)> GetPagedByCompanyIdAsync(Guid companyId, int page,
         int pageSize, CancellationToken ct = default)
     {
         var query = context.Clients

@@ -9,7 +9,7 @@ COPY ["src/B2BDashboard.Domain/B2BDashboard.Domain.csproj", "src/B2BDashboard.Do
 
 RUN dotnet restore "src/B2BDashboard.Api/B2BDashboard.Api.csproj"
 
-COPY src/ /src/
+COPY src/ src/
 
 WORKDIR /src/src/B2BDashboard.Api
 RUN dotnet publish -c Release -o /app/publish --no-restore

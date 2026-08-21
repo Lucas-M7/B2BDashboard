@@ -1,5 +1,6 @@
 using System.Text;
 using B2BDashboard.Api.ErrorHandling;
+using B2BDashboard.Api.Middleware;
 using B2BDashboard.Application.Common;
 using B2BDashboard.Application.Interfaces;
 using B2BDashboard.Application.Services;
@@ -10,8 +11,23 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi;
+using Serilog;
+
+Log.Logger = new LoggerConfiguration()
+    .WriteTo.Console()
+    .Enrich.FromLogContext()
+    .Enrich.WithEnvironmentName()
+    .CreateBootstrapLogger();
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Host.UseSerilog((context, services, configuration) => configuration
+    .ReadFrom.Configuration(context.Configuration)
+    .ReadFrom.Services(services)
+    .Enrich.FromLogContext()
+    .Enrich.WithEnvironmentName()
+    .WriteTo.Console(outputTemplate:
+        "[{Timestamp:HH:mm:ss} {Level:u3}] {Message:1} {Properties:j}{NewLine}{Excpetion}"));
 
 #region Banco de dados
 builder.Services.AddDbContext<AppDbcontext>(options =>
@@ -111,9 +127,12 @@ app.UseHttpsRedirection();
 
 app.UseAuthentication(); // "quem é você???" -> lê e valida o token
 app.UseAuthorization(); // "rapaaaz, você pode fazer isso?" -> ([Authorize], Roles)
+app.UseMiddleware<RequestEnrichmentMiddleware>();
 
 app.MapControllers();
 
 app.Run();
+
+app.UseSerilogRequestLogging();
 
 public partial class Program { }
